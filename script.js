@@ -16,7 +16,9 @@
         }
 
         function determineValidMove(move) {
+            console.log("Checking move validity")
             const [row, col] = move;
+            console.log(board[row][col] === 0)
             return board[row][col] === 0;
         }
 
@@ -120,13 +122,15 @@
         }
         
         article.addEventListener("click", (event) => {
-            let cell = event.target;
+            
+            let target = event.target;
         
-            if (cell.hasAttribute("data-id")) {
-                playerMove = cell.getAttribute("data-id").split(",").map(Number);
-        
+            if (target.hasAttribute("data-id") || (target.parentElement && target.parentElement.hasAttribute("data-id"))) {
+                if (target.parentElement.hasAttribute("data-id")) target = target.parentElement;
+                playerMove = target.getAttribute("data-id").split(",").map(Number);
+                
                 let moveValid = board.playToken(playerMove, activePlayer);
-        
+                console.log("click event");
                 if (!moveValid) {
                     console.log("Invalid move detected!");
                     notices.style.color = "red";
@@ -156,6 +160,7 @@
 
         resetBtn.addEventListener('click', () => {
             board = GameBoard();
+            notices.textContent = "";
             document.querySelectorAll("div.cell").forEach(div => {
                 div.innerHTML = "";
             });

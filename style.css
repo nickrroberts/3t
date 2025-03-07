@@ -100,8 +100,10 @@ h1 {
 }
 
 /* 🎭 Token Hover Effect */
-.token:hover {
-    transform: rotate(10deg);
+@media (hover: hover) and (pointer: fine) {
+    .token:hover {
+      transform: rotate(10deg);
+    }
 }
 
 /* ✨ Winning Cells Glow Effect */

@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+}
+main {
+    margin: 0 auto;
+    width: 20rem;
+    height: 20rem;
+    text-align: center;
+
+}
+
+article {
+    display: grid;
+    grid-template: repeat(3, 1fr)/ repeat(3, 1fr);
+    gap: 1rem;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 75vh;
+}
+
+.cell {
+    border: 1px solid gray;
+    height: auto;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell img {
+    height: 50%;
+}
+

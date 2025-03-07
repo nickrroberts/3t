@@ -101,30 +101,6 @@ h1 {
 }
 
 
-
-/* 🎭 Token Hover Effect */
-@media (hover: hover) and (pointer: fine) {
-    .token:hover {
-      transform: rotate(10deg);
-    }
-}
-
-/* ✨ Winning Cells Glow Effect */
-.winning-cell {
-    background-color: #ffeb3b;
-    animation: glow 1s infinite alternate;
-}
-
-/* 🌟 Glow Animation */
-@keyframes glow {
-    from {
-        box-shadow: 0 0 10px #ffeb3b;
-    }
-    to {
-        box-shadow: 0 0 20px #ffeb3b;
-    }
-}
-
 button {
     font-family: "Press Start 2P", system-ui;
     font-size: 1.5rem;
@@ -134,3 +110,26 @@ button {
     border-radius: 5px;
     padding: 1rem 2rem;
 }
+
+@media (max-width: 600px) {
+    html {
+      font-size: 12px; /* Smaller overall text size on phones */
+    }
+  
+
+    .grid {
+      grid-template-columns: repeat(3, 80px);
+      grid-template-rows: repeat(3, 80px);
+      gap: 8px;
+    }
+  
+    .cell {
+      width: 80px;
+      height: 80px;
+      font-size: 1.5rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+  }

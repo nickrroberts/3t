@@ -4,7 +4,8 @@
                      [0,0,0]
                 ];
         function playToken (move, player) {
-            if (!getAvailableCells(move)) {
+            console.log("Move received:", move);
+            if (!determineValidMove(move)) {
                 console.log("Invalid move, please try again.");
                 return false;
             }
@@ -14,13 +15,9 @@
             return true;
         }
 
-        function getAvailableCells(move) {
+        function determineValidMove(move) {
             const [row, col] = move;
-            console.log("get Available moves input:" + move)
-            console.log(typeof move);
-            if (board[row][col] === 0) {
-                return true
-            } else {return false}
+            return board[row][col] === 0;
         }
 
         function showGameBoard () {
@@ -41,8 +38,8 @@
             winningLines.push([board[0][2], board[1][1], board[2][0]]);
 
             for (let line of winningLines) {
-                if (line.every(cell => cell === 1)) return "Winner: Player One";
-                if (line.every(cell => cell === 2)) return "Winner: Player Two";
+                if (line.every(cell => cell === 1)) return "Winner: Player One!";
+                if (line.every(cell => cell === 2)) return "Winner: Player Two!";
             }
 
             if (board.flat().every(cell => cell !== 0)) return "Tie!";
@@ -52,13 +49,17 @@
 
         }
 
-        return {playToken, getAvailableCells, showGameBoard, checkWin}
+        return {playToken, determineValidMove, showGameBoard, checkWin}
 
     }
 
     function GameController (playerOneName = "Player 1", playerTwoName = "Player 2") {
-        const board = GameBoard();
+        let board = GameBoard();
         let playerMove;
+        const article = document.querySelector("article");
+        const moveMessage = document.getElementById("moveMessage");
+        const notices = document.getElementById("notices");
+        const resetBtn = document.querySelector("button"); 
         const players = [
             {
                 name: playerOneName,
@@ -81,36 +82,56 @@
             console.log(`${activePlayer.name}'s turn!`);
         }
 
+
         function playRound () {
-            board.showGameBoard();
-            const token = document.createElement("img");
-            token.setAttribute("src",`${activePlayer.symbol}.svg`);
-            const article = document.querySelector("article");
-            let moveMessage = document.getElementById("moveMessage");
-            moveMessage.textContent = `Alright, ${activePlayer.name}. What's your move?`
+            moveMessage.textContent = `Alright, ${activePlayer.name}. What's your move?`;
             
-            article.addEventListener('click', (event) => {
-                let cell = event.target;
-                if (cell.hasAttribute("data-id")) {
-                    playerMove = cell.getAttribute("data-id").split(",").map(Number);
-                    console.log(`value: ${playerMove} and type is ${typeof playerMove} `)
-                    let moveValid = board.playToken(playerMove, activePlayer); 
-                    if (!moveValid) {               
-                        return playRound();  
-                    }
-                    event.target.appendChild(token);
+        }
+        
+        article.addEventListener("click", (event) => {
+            let cell = event.target;
+        
+            if (cell.hasAttribute("data-id")) {
+                playerMove = cell.getAttribute("data-id").split(",").map(Number);
+        
+                let moveValid = board.playToken(playerMove, activePlayer);
+        
+                if (!moveValid) {
+                    console.log("Invalid move detected!");
+                    notices.style.color = "red";
+                    notices.textContent = "Can't move there! Try again";
+                    return;  
                 }
+        
+                notices.textContent = "";
+        
+                let token = document.createElement("img");
+                token.setAttribute("src", `${activePlayer.symbol}.svg`);
+                event.target.appendChild(token);
+        
                 let result = board.checkWin();
                 if (result !== false) {
                     console.log(result);
+                    moveMessage.style.color = "#0f0";
+                    moveMessage.textContent = result;
                     return;
                 }
+        
                 switchActivePlayer(activePlayer);
-                playRound(); 
-            });    
+                playRound();
+            }
+        }); 
 
+        resetBtn.addEventListener('click', () => {
+            board = GameBoard();
+            document.querySelectorAll("div.cell").forEach(div => {
+                div.innerHTML = "";
+            });
+            activePlayer = players[0];
+            moveMessage.style.color = "white";
+            moveMessage.textContent = "New game! Player 1 starts again.";
             
-        }
+        })
 
         playRound();
         
@@ -118,4 +139,4 @@
 
     }
 
-    const game = GameController();
+    let game = GameController();

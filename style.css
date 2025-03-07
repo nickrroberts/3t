@@ -66,12 +66,22 @@ h1 {
 }
 
 /* 🖱️ Hover Effect */
-@media (hover: hover) and (pointer: fine) {
-    .cell:hover {
-      background-color: #0f0;
-      transform: scale(1.1);
-    }
+
+.cell:hover {
+    background-color: #0f0;
+    transform: scale(1.1);
+    transform: rotate(10deg);
   }
+
+
+  /* ❌ ⭕ Player Tokens */
+.token {
+    width: 100%;
+    height: auto; 
+    transition: transform 0.3s ease-in-out;
+}
+
+
 
 /* 🎭 Move Message */
 #moveMessage {
@@ -90,14 +100,7 @@ h1 {
     margin-top: 10px;
 }
 
-/* ❌ ⭕ Player Tokens */
-.token {
-    width: 80%;
-    height: auto; 
-    max-width: 80px;
-    max-height: 80px;
-    transition: transform 0.3s ease-in-out;
-}
+
 
 /* 🎭 Token Hover Effect */
 @media (hover: hover) and (pointer: fine) {

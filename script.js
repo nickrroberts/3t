@@ -138,6 +138,7 @@
         
                 let token = document.createElement("img");
                 token.setAttribute("src", `${activePlayer.symbol}.svg`);
+                token.classList.add("token");
                 event.target.appendChild(token);
         
                 let result = board.checkWin();

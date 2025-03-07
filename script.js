@@ -38,8 +38,14 @@
             winningLines.push([board[0][2], board[1][1], board[2][0]]);
 
             for (let line of winningLines) {
-                if (line.every(cell => cell === 1)) return "Winner: Player One!";
-                if (line.every(cell => cell === 2)) return "Winner: Player Two!";
+                if (line.every(cell => cell === 1)) {
+                    launchConfetti();
+                    return "Winner: Player One!";
+                }
+                if (line.every(cell => cell === 2)) {
+                    launchConfetti();
+                    return "Winner: Player Two!";
+                } 
             }
 
             if (board.flat().every(cell => cell !== 0)) return "Tie!";
@@ -47,6 +53,37 @@
             return false;
 
 
+        }
+
+        function launchConfetti() {
+            const duration = 3000; // Confetti duration (3 seconds)
+            const animationEnd = Date.now() + duration;
+            const colors = ["#ff0000", "#00ff00", "#ffff00"]; // Red, Green, Yellow
+        
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+        
+            const interval = setInterval(() => {
+                const timeLeft = animationEnd - Date.now();
+        
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    return;
+                }
+        
+                // Fire confetti from multiple positions across the screen
+                confetti({
+                    particleCount: 50,
+                    startVelocity: 30,
+                    spread: 360, // Spread in all directions
+                    origin: {
+                        x: randomInRange(0, 1), // Random horizontal position
+                        y: randomInRange(0, 1), // Random vertical position
+                    },
+                    colors: colors,
+                });
+            }, 300);
         }
 
         return {playToken, determineValidMove, showGameBoard, checkWin}
@@ -80,12 +117,6 @@
                 activePlayer = players[1]
             } else {activePlayer = players[0]}
             console.log(`${activePlayer.name}'s turn!`);
-        }
-
-
-        function playRound () {
-            moveMessage.textContent = `Alright, ${activePlayer.name}. What's your move?`;
-            
         }
         
         article.addEventListener("click", (event) => {
@@ -132,6 +163,10 @@
             moveMessage.textContent = "New game! Player 1 starts again.";
             
         })
+
+        function playRound () {
+            moveMessage.textContent = `Alright, ${activePlayer.name}. What's your move?`;   
+        }
 
         playRound();
         
